@@ -31,7 +31,7 @@
           </elementProp>
           <elementProp name="s3bucketName" elementType="Argument">
             <stringProp name="Argument.name">s3bucketName</stringProp>
-            <stringProp name="Argument.value">faridpcre</stringProp>
+            <stringProp name="Argument.value">aws-testengine-s3 </stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="path" elementType="Argument">
@@ -289,7 +289,7 @@ log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
           <hashTree/>
         </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <boolProp name="ResultCollector.error_logging">true</boolProp>
           <objProp>
             <name>saveConfig</name>
             <value class="SampleSaveConfiguration">
@@ -336,7 +336,7 @@ log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
             </elementProp>
             <elementProp name="influxdbUrl" elementType="Argument">
               <stringProp name="Argument.name">influxdbUrl</stringProp>
-              <stringProp name="Argument.value">http://localhost:8086/write?db=jmeter</stringProp>
+              <stringProp name="Argument.value">http://10.112.0.112:8086/write?db=jmeter</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="application" elementType="Argument">

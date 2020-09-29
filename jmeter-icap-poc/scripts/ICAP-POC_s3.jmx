@@ -12,6 +12,36 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="local" enabled="false">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="icapServer" elementType="Argument">
+            <stringProp name="Argument.name">icapServer</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="containerUrl" elementType="Argument">
+            <stringProp name="Argument.name">containerUrl</stringProp>
+            <stringProp name="Argument.value">http://mycloudstore/container/</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="outputPath" elementType="Argument">
+            <stringProp name="Argument.name">outputPath</stringProp>
+            <stringProp name="Argument.value">out</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="s3bucketName" elementType="Argument">
+            <stringProp name="Argument.name">s3bucketName</stringProp>
+            <stringProp name="Argument.value">faridpcre</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="path" elementType="Argument">
+            <stringProp name="Argument.name">path</stringProp>
+            <stringProp name="Argument.value">in</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="icapServer" elementType="Argument">
@@ -31,7 +61,7 @@
           </elementProp>
           <elementProp name="s3bucketName" elementType="Argument">
             <stringProp name="Argument.name">s3bucketName</stringProp>
-            <stringProp name="Argument.value">aws-testengine-s3 </stringProp>
+            <stringProp name="Argument.value">aws-testengine-s3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="path" elementType="Argument">
@@ -40,6 +70,7 @@
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
+        <stringProp name="TestPlan.comments">aws-testengine-s3</stringProp>
       </Arguments>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
@@ -219,7 +250,7 @@ p.waitFor();
 
 log.info(&quot;Execution complete.&quot;);
 
-String s3cp_out=&quot;aws s3 cp &quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+&quot;${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
+String s3cp_out=&quot;aws s3 cp &quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+uuid+&quot;_${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
 
 Process s3p_out = Runtime.getRuntime().exec(s3cp_out);
 s3p_out.waitFor();
@@ -336,7 +367,7 @@ log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
             </elementProp>
             <elementProp name="influxdbUrl" elementType="Argument">
               <stringProp name="Argument.name">influxdbUrl</stringProp>
-              <stringProp name="Argument.value">http://10.112.0.112:8086/write?db=jmeter</stringProp>
+              <stringProp name="Argument.value">http://10.112.0.112 :8086/write?db=jmeter</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="application" elementType="Argument">

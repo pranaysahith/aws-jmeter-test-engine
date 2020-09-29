@@ -219,7 +219,7 @@ p.waitFor();
 
 log.info(&quot;Execution complete.&quot;);
 
-String s3cp_out=&quot;aws s3 cp&quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+&quot;${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
+String s3cp_out=&quot;aws s3 cp &quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+&quot;${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
 
 Process s3p_out = Runtime.getRuntime().exec(s3cp_out);
 s3p_out.waitFor();
@@ -237,7 +237,7 @@ StringBuilder logCommandOutput = new StringBuilder();
 
 in.readLine();
 String line;
-*while( (line = in.readLine()) != null) {
+while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
   log.info(&quot;line is &quot;+line);
   if (line.contains(&quot;OK&quot;))

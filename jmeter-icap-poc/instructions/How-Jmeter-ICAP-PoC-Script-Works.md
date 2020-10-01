@@ -53,4 +53,21 @@ Waiting for possible Shutdown/StopTestNow/HeapDump/ThreadDump message on port 44
 ```
 We need to ensure that heap memory does not exceed available memory
 
+There are several parameters in the script that can be changed during load tests
+```bash
+p_url=for icap server url: default is gw-icap01.westeurope.azurecontainer.io
+p_bucket=bucket name for storing input and output files
+p_inluxHost=influxdb IP address, default is localhost
+p_vuserCount=number of concurrent users, default is 10
+p_rampup= how many seconds to ramp up concurrent users, default is 20
+p_duration=duration of test run in seconds,default is 600.
+```
+For example, if we want to run, jmeter script with different bucket and influxdb host then it is run like this:
+```bash
+[root@ip-172-31-85-184 bin]# JVM_ARGS="-Xms1024m -Xmx1024m" sh jmeter.sh -n -t ICAP-POC_s3.jmx -Jp_bucket=aws-testengine-s3 -Jp_influxHost=10.112.0.112 -l icaptest-s33.log
+Creating summariser <summary>
+Created the tree successfully using ICAP-POC_s3.jmx
+Starting standalone test @ Fri Sep 25 04:12:37 UTC 2020 (1601007157810)
+Waiting for possible Shutdown/StopTestNow/HeapDump/ThreadDump message on port 4445
+```
 

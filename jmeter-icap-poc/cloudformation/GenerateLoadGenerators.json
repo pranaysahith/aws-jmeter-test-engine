@@ -5,12 +5,12 @@
     "VpcId": {
       "Type": "String",
       "Description" : "VPC ID",
-      "Default" : "vpc-a6f724c2"
+      "Default" : "vpc-02db6ac5915e8de9b"
     },
     "SubnetIds":  {
       "Type": "CommaDelimitedList",
       "Description" : "Subnet IDs",
-      "Default" : "subnet-086d4923, subnet-361f6853, subnet-4039f07d, subnet-57fdca0e, subnet-9ae37296, subnet-b3d7cac4"
+      "Default" : "subnet-02e0fb935c900d08e"
     },
       "AsgName" : {
          "Description" : "Autoscaling group name",
@@ -20,23 +20,23 @@
       "KeyPairName" : {
          "Description" : "Keypair that will be used to connect to the server",
          "Type" : "String",
-         "Default" : "faridtest"
+         "Default" : "AWS-TestEngine-Key"
       },
       "AmiImage" : {
          "Description" : "Ami image that will be used to launch the server",
+         "Default" : "ami-080f50f4f2ce12599",
          "Type" : "String",
-         "Default" : "ami-0ce35cd1a68623474"
       },
       "InstanceType" : {
         "Description" : "Instance Type",
         "Type" : "String",
-        "Default" : "c4.2xlarge",
-        "AllowedValues" : [ "m1.small","t1.micro","t2.micro","t2.small","t3.medium","m3.medium","m3.large","m3.xlarge","m3.2xlarge","c4.2xlarge","c3.xlarge","c4.xlarge","c3.4xlarge","c3.8xlarge","g2.2xlarge","r3.large","r3.xlarge","r3.2xlarge","r3.4xlarge","r3.8xlarge","i2.xlarge","i2.2xlarge","i2.4xlarge","i2.8xlarge","hs1.8xlarge"],
+        "Default" : "m4.2xlarge",
+        "AllowedValues" : [ "m1.small","t1.micro","t2.micro","t2.small","t3.medium","m3.medium","m3.large","m3.xlarge","m3.2xlarge","m4.2xlarge","c4.2xlarge","c3.xlarge","c4.xlarge","c3.4xlarge","c3.8xlarge","g2.2xlarge","r3.large","r3.xlarge","r3.2xlarge","r3.4xlarge","r3.8xlarge","i2.xlarge","i2.2xlarge","i2.4xlarge","i2.8xlarge","hs1.8xlarge"],
         "ConstraintDescription" : "must be a valid EC2 instance type."
       },
       "InstanceSecurityGroup":{
         "Type":"String",
-        "Default" : "sg-0099b80c319806fff"
+        "Default" : "sg-0c82ddcb24373c694"
       }
    },
   "Resources" : {
@@ -60,8 +60,8 @@
      "Type" : "AWS::AutoScaling::AutoScalingGroup",
      "Properties" : {
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
-        "MinSize" : "10",
-        "MaxSize" : "10",
+        "MinSize" : "8",
+        "MaxSize" : "8",
         "VPCZoneIdentifier" : { "Ref" : "SubnetIds" },
         "Tags" : [ 
           {

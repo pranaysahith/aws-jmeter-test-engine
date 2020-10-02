@@ -141,25 +141,26 @@ String command = &quot;/usr/local/c-icap/bin/c-icap-client -i &quot; + vars.get(
 // Print the generated status check command
 log.info(command);
 
-// Create a process object and let this object execute the ping command
+// Create a process object and let this object execute the command
 Process p = Runtime.getRuntime().exec(command);
 p.waitFor();
 
-log.info(&quot;Execution complete.&quot;);
+log.info(&quot;Server Status check complete.&quot;);
 
 // Read the output of the command and log it
-BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+BufferedReader in = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 StringBuilder logCommandOutput = new StringBuilder();
 String line;
+ SampleResult.setSuccessful(false);
 while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
-  if (line.contains(&quot;OK&quot;))
-     SampleResult.setSuccessful(false);
+  if (line.contains(&quot;OK&quot;)) {
+     SampleResult.setSuccessful(true);
      break;
-     
+  }
 }
 in.close();
-log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
+log.info(&quot;Server Status check Output: &quot; + logCommandOutput.toString());</stringProp>
             <stringProp name="scriptLanguage">java</stringProp>
           </JSR223Sampler>
           <hashTree/>
@@ -195,25 +196,26 @@ String command = &quot;/usr/local/c-icap/bin/c-icap-client -i &quot; + vars.get(
 // Print the generated status check command
 log.info(command);
 
-// Create a process object and let this object execute the ping command
+// Create a process object and let this object execute the command
 Process p = Runtime.getRuntime().exec(command);
 p.waitFor();
 
-log.info(&quot;Execution complete.&quot;);
+log.info(&quot;Resource Status check complete.&quot;);
 
 // Read the output of the command and log it
-BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+BufferedReader in = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 StringBuilder logCommandOutput = new StringBuilder();
 String line;
+SampleResult.setSuccessful(false);
 while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
-  if (line.contains(&quot;OK&quot;))
-     SampleResult.setSuccessful(false);
+  if (line.contains(&quot;OK&quot;)) {
+     SampleResult.setSuccessful(true);
      break;
-     
+  }
 }
 in.close();
-log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
+log.info(&quot;Resource Status check Output: &quot; + logCommandOutput.toString());</stringProp>
             <stringProp name="scriptLanguage">java</stringProp>
           </JSR223Sampler>
           <hashTree/>
@@ -247,7 +249,7 @@ log.info(&quot;UUID is &quot;+uuid);
 log.info(&quot;Coping files from s3 to localdisk&quot;);
 String s3cp=&quot;aws s3 cp s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${path}/&quot;+&quot;${fileName}&quot;+&quot; &quot;+vars.get(&quot;path&quot;)+&quot;/&quot;+&quot;${fileName}&quot;;
 
-// Create a process object and let this object execute the ping command
+// Create a process object and let this object execute the command
 Process s3p = Runtime.getRuntime().exec(s3cp);
 s3p.waitFor();
 log.info(&quot;File copied to in. &quot;+s3cp);
@@ -323,7 +325,7 @@ String uuid=vars.get(&quot;uid&quot;);
 log.info(&quot;Coping files from s3 to localdisk&quot;);
 String s3cp=&quot;aws s3 cp s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${path}/&quot;+&quot;${fileName}&quot;+&quot; &quot;+vars.get(&quot;path&quot;)+&quot;/&quot;+&quot;${fileName}&quot;;
 
-// Create a process object and let this object execute the ping command
+// Create a process object and let this object execute the command
 Process s3p = Runtime.getRuntime().exec(s3cp);
 s3p.waitFor();
 log.info(&quot;File copied to in. &quot;+s3cp);*/
@@ -337,11 +339,11 @@ log.info(&quot;Command 1 is &quot;+command1);
 log.info(&quot;Command 2 is &quot;+command2);
 log.info(&quot;Full command is &quot;+command);
 
-// Create a process object and let this object execute the ping command
+// Create a process object and let this object execute the icap client command
 Process p = Runtime.getRuntime().exec(command);
 p.waitFor();
 
-log.info(&quot;Execution complete.&quot;);
+log.info(&quot;Document Upload Execution complete.&quot;+ p.exitValue());
 /*
 String s3cp_out=&quot;aws s3 cp &quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+uuid+&quot;_${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
 
@@ -358,20 +360,23 @@ s3p_out.waitFor();*/
 // Read the output of the command and log it
 BufferedReader in = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 StringBuilder logCommandOutput = new StringBuilder();
-
 in.readLine();
+in.readLine();
+in.readLine();
+SampleResult.setSuccessful(false);
 String line;
 while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
   log.info(&quot;line is &quot;+line);
-  if (line.contains(&quot;OK&quot;))
-     SampleResult.setSuccessful(false);
+  if (line.contains(&quot;ICAP/1.0 200 OK&quot;)) {
+     SampleResult.setSuccessful(true);
+     log.info(&quot;My line is &quot;+line);
      break;
-     
+  }
 }
 
 in.close();
-log.info(&quot;Output: &quot; + logCommandOutput.toString());</stringProp>
+log.info(&quot;Upload Output: &quot; + logCommandOutput.toString());</stringProp>
             <stringProp name="scriptLanguage">java</stringProp>
           </JSR223Sampler>
           <hashTree/>

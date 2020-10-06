@@ -18,7 +18,7 @@ It basically
 There is files.txt file that contains list of file names that need to be uploaded to ICAP server.
 
 ## What is pre-requisite to run the Jmeter script
-
+- download jar files from lib folder in this github report for this project and put them in jmeter lib folder in load generator machines
 - Install AWS cli client in machine where jmeter is hosted (if the client does not exist)
     - https://docs.aws.amazon.com/cli/latest/userguide/install-linux-al2017.html
 - Create AWS access and secret key that has access to s3 (read/write)

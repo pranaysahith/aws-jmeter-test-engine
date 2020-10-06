@@ -376,16 +376,48 @@ p.waitFor();
 
 log.info(&quot;Document Upload Execution complete.&quot;+ p.exitValue());
 
+
+private static String getFileChecksum(MessageDigest digest, File file) throws IOException
+{
+    //Get file input stream for reading the file content
+    FileInputStream fis = new FileInputStream(file);
+     
+    //Create byte array to read data in chunks
+    byte[] byteArray = new byte[1024];
+    int bytesCount = 0; 
+      
+    //Read file data and update in message digest
+    while ((bytesCount = fis.read(byteArray)) != -1) {
+        digest.update(byteArray, 0, bytesCount);
+    };
+     
+    //close the stream; We don&apos;t need it now.
+    fis.close();
+     
+    //Get the hash&apos;s bytes
+    byte[] bytes = digest.digest();
+     
+    //This bytes[] has bytes in decimal format;
+    //Convert it to hexadecimal format
+    StringBuilder sb = new StringBuilder();
+    for(int i=0; i&lt; bytes.length ;i++)
+    {
+        sb.append(Integer.toString((bytes[i] &amp; 0xff) + 0x100, 16).substring(1));
+    }
+     
+    //return complete hash
+   return sb.toString();
+}
 //checksum md5
-/*
+
 //Create checksum for this file
 File inFile = new File(&quot;${path}/${fileName}&quot;);
  
 //Use MD5 algorithm
-MessageDigest in_md5Digest = MessageDigest.getInstance(&quot;MD5&quot;);
+MessageDigest in_Digest = MessageDigest.getInstance(&quot;SHA-256&quot;);
  
 //Get the checksum
-String in_checksum = getFileChecksum(in_md5Digest, inFile);
+String in_checksum = getFileChecksum(in_Digest, inFile);
  
 //see checksum
 log.info(&quot;In file hash is &quot;+in_checksum);
@@ -394,15 +426,15 @@ log.info(&quot;In file hash is &quot;+in_checksum);
 File outFile = new File(&quot;${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;);
  
 //Use MD5 algorithm
-MessageDigest out_md5Digest = MessageDigest.getInstance(&quot;MD5&quot;);
+MessageDigest out_Digest = MessageDigest.getInstance(&quot;SHA-256&quot;);
  
 //Get the checksum
-String out_checksum = getFileChecksum(out_md5Digest, outFile);
+String out_checksum = getFileChecksum(out_Digest, outFile);
  
 //see checksum
 log.info(&quot;Out file hash is &quot;+out_checksum);
 
-*/
+
 
 // Read the output of the command and log it
 BufferedReader in = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -415,7 +447,7 @@ String line;
 while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
   log.info(&quot;line is &quot;+line);
-  if (line.contains(&quot;ICAP/1.0 200 OK&quot;)) {
+  if (line.contains(&quot;ICAP/1.0 200 OK&quot;)&amp;&amp;!in_checksum.equals(out_checksum)) {
      SampleResult.setSuccessful(true);
      log.info(&quot;My line is &quot;+line);
      break;

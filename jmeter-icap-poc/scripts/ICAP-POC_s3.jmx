@@ -74,6 +74,31 @@
             <stringProp name="Argument.value">${__P(p_influxHost,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="aws_access_key" elementType="Argument">
+            <stringProp name="Argument.name">aws_access_key</stringProp>
+            <stringProp name="Argument.value">${__P(p_aws_access_key,access_key)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="aws_secret_key" elementType="Argument">
+            <stringProp name="Argument.name">aws_secret_key</stringProp>
+            <stringProp name="Argument.value">${__P(p_aws_secret_key,secret)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="aws_host" elementType="Argument">
+            <stringProp name="Argument.name">aws_host</stringProp>
+            <stringProp name="Argument.value">${__P(p_aws_host,s3)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="aws_service_name" elementType="Argument">
+            <stringProp name="Argument.name">aws_service_name</stringProp>
+            <stringProp name="Argument.value">${__P(p_aws_service_name,s3)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="aws_region" elementType="Argument">
+            <stringProp name="Argument.name">aws_region</stringProp>
+            <stringProp name="Argument.value">${__P(p_aws_region,us-east-1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
         <stringProp name="TestPlan.comments">aws-testengine-s3  ${__P(p_url,gw-icap01.westeurope.azurecontainer.io)} ${__P(p_influxHost,localhost)}</stringProp>
       </Arguments>
@@ -320,6 +345,12 @@ log.info(&quot;Output: &quot; + logCommandOutput.toString());*/</stringProp>
 //
 // ********
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 String uuid=vars.get(&quot;uid&quot;);
 /*log.info(&quot;UUID is &quot;+uuid);
 log.info(&quot;Coping files from s3 to localdisk&quot;);
@@ -344,18 +375,66 @@ Process p = Runtime.getRuntime().exec(command);
 p.waitFor();
 
 log.info(&quot;Document Upload Execution complete.&quot;+ p.exitValue());
-/*
-String s3cp_out=&quot;aws s3 cp &quot;+ &quot;${outputPath}&quot;+&quot;/&quot;+uuid+&quot;_${fileName}&quot;+&quot; s3://&quot;+vars.get(&quot;s3bucketName&quot;)+&quot;/${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;;
 
-Process s3p_out = Runtime.getRuntime().exec(s3cp_out);
-s3p_out.waitFor();
 
-log.info(&quot;Out file copied to s3. &quot;+s3cp_out);
+private static String getFileChecksum(MessageDigest digest, File file) throws IOException
+{
+    //Get file input stream for reading the file content
+    FileInputStream fis = new FileInputStream(file);
+     
+    //Create byte array to read data in chunks
+    byte[] byteArray = new byte[1024];
+    int bytesCount = 0; 
+      
+    //Read file data and update in message digest
+    while ((bytesCount = fis.read(byteArray)) != -1) {
+        digest.update(byteArray, 0, bytesCount);
+    };
+     
+    //close the stream; We don&apos;t need it now.
+    fis.close();
+     
+    //Get the hash&apos;s bytes
+    byte[] bytes = digest.digest();
+     
+    //This bytes[] has bytes in decimal format;
+    //Convert it to hexadecimal format
+    StringBuilder sb = new StringBuilder();
+    for(int i=0; i&lt; bytes.length ;i++)
+    {
+        sb.append(Integer.toString((bytes[i] &amp; 0xff) + 0x100, 16).substring(1));
+    }
+     
+    //return complete hash
+   return sb.toString();
+}
+//checksum md5
 
-//clean out folder
-String removeOutFile=&quot;rm -Rf &quot;+&quot;${outputPath}&quot;+&quot;/&quot;+uuid+&quot;${fileName}&quot;;
-s3p_out = Runtime.getRuntime().exec(removeOutFile);
-s3p_out.waitFor();*/
+//Create checksum for this file
+File inFile = new File(&quot;${path}/${fileName}&quot;);
+ 
+//Use MD5 algorithm
+MessageDigest in_Digest = MessageDigest.getInstance(&quot;SHA-256&quot;);
+ 
+//Get the checksum
+String in_checksum = getFileChecksum(in_Digest, inFile);
+ 
+//see checksum
+log.info(&quot;In file hash is &quot;+in_checksum);
+
+//Create checksum for this file
+File outFile = new File(&quot;${outputPath}/&quot;+uuid+&quot;_${fileName}&quot;);
+ 
+//Use MD5 algorithm
+MessageDigest out_Digest = MessageDigest.getInstance(&quot;SHA-256&quot;);
+ 
+//Get the checksum
+String out_checksum = getFileChecksum(out_Digest, outFile);
+ 
+//see checksum
+log.info(&quot;Out file hash is &quot;+out_checksum);
+
+
 
 // Read the output of the command and log it
 BufferedReader in = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -368,7 +447,7 @@ String line;
 while( (line = in.readLine()) != null) {
   logCommandOutput.append(line);
   log.info(&quot;line is &quot;+line);
-  if (line.contains(&quot;ICAP/1.0 200 OK&quot;)) {
+  if (line.contains(&quot;ICAP/1.0 200 OK&quot;)&amp;&amp;!in_checksum.equals(out_checksum)) {
      SampleResult.setSuccessful(true);
      log.info(&quot;My line is &quot;+line);
      break;
@@ -393,6 +472,65 @@ log.info(&quot;Upload Output: &quot; + logCommandOutput.toString());</stringProp
         </TransactionController>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+
+String uuid=vars.get(&quot;uid&quot;);
+log.info(&quot;UUID is &quot;+uuid);
+
+access_key = vars.get(&quot;aws_access_key&quot;);
+ secret_key = vars.get(&quot;aws_secret_key&quot;);
+service = vars.get(&quot;aws_service_name&quot;);
+bucketName = vars.get(&quot;s3bucketName&quot;);
+region=vars.get(&quot;aws_region&quot;);
+
+host = bucketName+&quot;.&quot;+service+&quot;.&quot;+region+&quot;.&quot;+&quot;amazonaws.com&quot;;
+
+log.info(&quot;Host is &quot;+host);
+
+
+
+        //put your accesskey and secretkey here
+ private static final AWSCredentials credentials = new BasicAWSCredentials(
+          access_key, 
+          secret_key
+        );
+  
+  
+ AmazonS3 s3client = AmazonS3ClientBuilder
+          .standard()
+          .withCredentials(new AWSStaticCredentialsProvider(credentials))
+          .withRegion(region)
+          .build();
+
+
+ fileName=&quot;${outputPath}&quot;+&quot;/&quot;+uuid+&quot;_${fileName}&quot;;
+ log.info(&quot;Filename is &quot;+fileName);
+
+  s3client.putObject(
+          bucketName, 
+          fileName,
+          new File(fileName)
+        );
+   log.info(&quot;File is uploaded to out folder &quot;+fileName);</stringProp>
+            <stringProp name="scriptLanguage">java</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="S3 CLI copy" enabled="false">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -604,6 +742,58 @@ log.info(&quot;Output: &quot; + logCommandOutput.toString());*/</stringProp>
         <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
       </BackendListener>
       <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>

@@ -18,7 +18,7 @@ It basically
 There is files.txt file that contains list of file names that need to be uploaded to ICAP server.
 
 ## What is pre-requisite to run the Jmeter script
-
+- download jar files from lib folder in this github report for this project and put them in jmeter lib folder in load generator machines
 - Install AWS cli client in machine where jmeter is hosted (if the client does not exist)
     - https://docs.aws.amazon.com/cli/latest/userguide/install-linux-al2017.html
 - Create AWS access and secret key that has access to s3 (read/write)
@@ -61,10 +61,13 @@ p_inluxHost=influxdb IP address, default is localhost
 p_vuserCount=number of concurrent users, default is 10
 p_rampup= how many seconds to ramp up concurrent users, default is 20
 p_duration=duration of test run in seconds,default is 600.
+p_aws_access_key= aws access key, no default value. Must to use
+p_aws_secret_key= aws secret key, no default value. Must to use
+p_aws_region= region where bucket is created, default is us-east-1
 ```
 For example, if we want to run, jmeter script with different bucket and influxdb host then it is run like this:
 ```bash
-[root@ip-172-31-85-184 bin]# JVM_ARGS="-Xms1024m -Xmx1024m" sh jmeter.sh -n -t ICAP-POC_s3.jmx -Jp_bucket=aws-testengine-s3 -Jp_influxHost=10.112.0.112 -l icaptest-s33.log
+[root@ip-172-31-85-184 bin]# JVM_ARGS="-Xms1024m -Xmx1024m" sh jmeter.sh -n -t ICAP-POC_s3.jmx -Jp_aws_access=accesskeyhere -Jp_aws_secret_key=secretkeyhere -Jp_bucket=aws-testengine-s3 -Jp_influxHost=10.112.0.112 -l icaptest-s33.log
 Creating summariser <summary>
 Created the tree successfully using ICAP-POC_s3.jmx
 Starting standalone test @ Fri Sep 25 04:12:37 UTC 2020 (1601007157810)

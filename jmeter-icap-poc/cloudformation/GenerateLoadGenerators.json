@@ -24,7 +24,7 @@
       },
       "AmiImage" : {
          "Description" : "Ami image that will be used to launch the server",
-         "Default" : "ami-080f50f4f2ce12599",
+         "Default" : "ami-0e91e52bc7cc30528",
          "Type" : "String",
       },
       "InstanceType" : {
@@ -60,8 +60,8 @@
      "Type" : "AWS::AutoScaling::AutoScalingGroup",
      "Properties" : {
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
-        "MinSize" : "8",
-        "MaxSize" : "8",
+        "MinSize" : "1",
+        "MaxSize" : "1",
         "VPCZoneIdentifier" : { "Ref" : "SubnetIds" },
         "Tags" : [ 
           {

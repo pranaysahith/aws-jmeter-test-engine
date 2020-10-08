@@ -15,17 +15,17 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="aws_access_key" elementType="Argument">
             <stringProp name="Argument.name">aws_access_key</stringProp>
-            <stringProp name="Argument.value">acessKey here</stringProp>
+            <stringProp name="Argument.value">AKIA6NN33UNRQH6XBZEG</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="aws_secret_key" elementType="Argument">
             <stringProp name="Argument.name">aws_secret_key</stringProp>
-            <stringProp name="Argument.value">secretkey here</stringProp>
+            <stringProp name="Argument.value">4aCd7dBAh5BZv7+zIXPlbc8lxJitWQx/haBYCg+t</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="aws_host" elementType="Argument">
             <stringProp name="Argument.name">aws_host</stringProp>
-            <stringProp name="Argument.value">bucketnamehere.s3.us-east-1.amazonaws.com</stringProp>
+            <stringProp name="Argument.value">faridpcre.s3.us-east-1.amazonaws.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="aws_service_name" elementType="Argument">

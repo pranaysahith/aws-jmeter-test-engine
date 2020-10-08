@@ -74,3 +74,20 @@ Starting standalone test @ Fri Sep 25 04:12:37 UTC 2020 (1601007157810)
 Waiting for possible Shutdown/StopTestNow/HeapDump/ThreadDump message on port 4445
 ```
 
+## What is HW requirement to run the JMeter script?
+
+Actual requirement will depend on type of test scenarios are to be run and also their duration.
+
+vCPU, Memory and Disk Storage needs to be considered carefully. Disk storage size need depends on total number of files and their total storage. 
+
+Additionally, to be able to generate more concurrent requests, we need to increase default TCP connections limit to higher. In Linux OS in AWS, default is usually 1024.
+
+The following is general recommended guideline to be used:
+
+To be able to generate 4000 concurrent users with this specific script AWS instance type c4.2xlarge/m4.2xlarge/c5.2xlarge/m5.2xlarge Amazon Linux instances recommended to be used.
+
+Disk storage totally depends on test duration and size of test files. 
+
+For example, 4 million files with average 10MB size would be 40TB in total.
+
+

@@ -58,4 +58,11 @@ tcp        0      0 :::3000                     :::*                        LIST
 ```
 In above results, server is listening on ports 8086 (influxdb) and 3000(grafana)
 
+## HW requirements for Grafana & InluxDB setup
+
+| vCPU     | RAM | IOPS     | Writes per second |Queries per second | Unique Series
+| :----:   | :----:   |    :----: |:----:|:----:|:----:|
+| 2-4      | 2-4 GB     | 500   |< 5000 | <5 |<100000|
+| 4-6  | 8-32  GB      | 500-1000| <250 000| <25 |<1,000,000 |
+| 8+ | 32+  GB      | 1000+| >250 000| >25 |>1,000,000 |
 

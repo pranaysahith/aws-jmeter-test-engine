@@ -24,8 +24,8 @@
       },
       "AmiImage" : {
          "Description" : "Ami image that will be used to launch the server",
-         "Default" : "ami-080f50f4f2ce12599",
-         "Type" : "String",
+         "Default" : "ami-0e91e52bc7cc30528",
+         "Type" : "String"
       },
       "InstanceType" : {
         "Description" : "Instance Type",
@@ -37,7 +37,15 @@
       "InstanceSecurityGroup":{
         "Type":"String",
         "Default" : "sg-0c82ddcb24373c694"
-      }
+      },
+     "MinInstances": {
+       "Type": "Number",
+       "Default": 1
+     },
+     "MaxInstances": {
+       "Type": "Number",
+       "Default": 1
+     }
    },
   "Resources" : {
 
@@ -60,8 +68,8 @@
      "Type" : "AWS::AutoScaling::AutoScalingGroup",
      "Properties" : {
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
-        "MinSize" : "8",
-        "MaxSize" : "8",
+        "MinSize" : { "Ref" : "MinInstances" },
+        "MaxSize" : { "Ref" : "MaxInstances" },
         "VPCZoneIdentifier" : { "Ref" : "SubnetIds" },
         "Tags" : [ 
           {

@@ -79,8 +79,9 @@ def main():
 
     # create ASG with instances to run jmeter tests
     now = datetime.now()
-    stack_suffix = now.strftime("%Y-%m-%d-%H-%M")
-    stack_name = 'aws-jmeter-test-engine-' + stack_suffix
+    date_suffix = now.strftime("%Y-%m-%d-%H-%M")
+    stack_name = 'aws-jmeter-test-engine-' + date_suffix
+    asg_name = "LoadTest-" + date_suffix
     print("Deploying %s instances in the ASG by creating %s cloudformation stack"% (instances_required, stack_name))
     
     client.create_stack(
@@ -94,6 +95,10 @@ def main():
             {
                 "ParameterKey": "MaxInstances",
                 "ParameterValue": str(instances_required)
+            },
+            {
+                "ParameterKey": "AsgName",
+                "ParameterValue": asg_name
             }
         ]
     )

@@ -14,7 +14,7 @@
 5. Click Start Instance
 6. After a short wait a public IP Address should appear on the row of that instance Copy this to your clipboard
 7. In your browser go to {IP_ADDRESS}:3000, you will land on a grafana login page (NB you must be connected to VPN)
-8. Enter the login details (user: admin pw: Gla$$Wall)
+8. Obtain and enter the login details
 9. Select Dashboards from the left hand menu, then click manage
 10. Click on the ICAP Live Performance Dashboard
 
@@ -61,10 +61,9 @@ NB These values update periodically, get the updated values from the AWS SSO lis
 5. Repeat the command from step 1 to check the updated status
 6. Take note of the public IP Address
 7. In your browser go to {IP_ADDRESS}:3000, you will land on a grafana login page (NB you must be connected to VPN)
-8. Enter the login details (user: admin pw: Gla$$Wall)
+8. Obtain and enter the login details
 9. Select Dashboards from the left hand menu, then click manage
 10. Click on the ICAP Live Performance Dashboard
-
 
 ### Launch Load Generators
 
@@ -76,14 +75,13 @@ NB These values update periodically, get the updated values from the AWS SSO lis
 4. You can view the state of started instances by running the following command
 	``` aws ec2 describe-instances --filters "Name=tag:Name,Values=LoadTest-1" ```
 
-
 ## Checking values in the Cloudformation Script
 
 It's worth checking a few things in the cloudformation script.
 
 There are some existing resources that the script uses to generate the required instances
 
-ami - ami-0e91e52bc7cc30528
+ami - ami-07abb328b16a8237a
 
 sg - sg-0c82ddcb24373c694
 
@@ -100,3 +98,37 @@ AMI, Security Group, and Key Pair Name can all be found under the EC2 Service.
 VPC and Subnet can be found under the VPC Service.
 
 All resources intended to be used in this script reference AWS-TestEngine in their name.
+
+## Related Resources
+
+### S3 Usage
+
+The S3 Service provides two uses to the test engine.
+
+The S3 bucket used by the test engine is aws-testengine-s3
+
+#### Test Script Storage
+
+The following files are pulled from S3 by the EC2 machines. Any changes to these files will need to be updated in the S3 bucket for a successful test run
+
+- ICAP-POC_s3.jmx
+  - S3 Location: s3://aws-testengine-s3/script/ICAP-POC_s3.jmx
+  - Purpose: jmx script containing the test to run
+
+- files.txt
+  - S3 Location: s3://aws-testengine-s3/script/files.txt
+  - Purpose: Contains a list of files from the test data input folder so the test knows which files to access
+
+- Jmeter Jar files
+  - S3 Location: s3://aws-testengine-s3/script/lib/
+  - Purpose: Folder which contains the jar files for jmeter plugins used by the jmx script
+
+#### Test Data Storage
+
+This S3 bucket also conatins two locations for Test Data
+
+- s3://aws-testengine-s3/in/
+  - This location contains unprocessed files that the jmx script will send to the ICAP Server to be processed
+
+- s3://aws-testengine-s3/out/
+  - This location contains processed files that the jmx script has uploaded after the ICAP Server server has processed them

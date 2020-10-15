@@ -14,7 +14,7 @@
 5. Click Start Instance
 6. After a short wait a public IP Address should appear on the row of that instance Copy this to your clipboard
 7. In your browser go to {IP_ADDRESS}:3000, you will land on a grafana login page (NB you must be connected to VPN)
-8. Enter the login details
+8. Obtain and enter the login details
 9. Select Dashboards from the left hand menu, then click manage
 10. Click on the ICAP Live Performance Dashboard
 
@@ -61,7 +61,7 @@ NB These values update periodically, get the updated values from the AWS SSO lis
 5. Repeat the command from step 1 to check the updated status
 6. Take note of the public IP Address
 7. In your browser go to {IP_ADDRESS}:3000, you will land on a grafana login page (NB you must be connected to VPN)
-8. Enter the login details
+8. Obtain and enter the login details
 9. Select Dashboards from the left hand menu, then click manage
 10. Click on the ICAP Live Performance Dashboard
 
@@ -117,7 +117,7 @@ The following files are pulled from S3 by the EC2 machines. Any changes to these
 
 - files.txt
   - S3 Location: s3://aws-testengine-s3/script/files.txt
-  - Purpose: Conatains a list of files from the test data input folder so the test knows which files to access
+  - Purpose: Contains a list of files from the test data input folder so the test knows which files to access
 
 - Jmeter Jar files
   - S3 Location: s3://aws-testengine-s3/script/lib/

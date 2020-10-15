@@ -69,7 +69,7 @@ def main():
     bucket = configuration.get("bucket")
     file_name = configuration.get("file_name")
     s3_client.put_object(Bucket=bucket,
-                        Body=str(instances_required),
+                        Body=str(users_per_instance),
                         Key=file_name)
 
     # Load cloudformation template

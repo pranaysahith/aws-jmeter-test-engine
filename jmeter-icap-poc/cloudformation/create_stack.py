@@ -45,21 +45,24 @@ def main():
     
     # calculate number of instances required
     instances_required = ceil(total_users/users_per_instance)
-    i = 0
-    while i < 5:
-        if total_users % users_per_instance == 0:
-            instances_required = int(total_users/users_per_instance)
-            break
-        else:
-            if total_users % instances_required == 0:
-                users_per_instance = int(total_users / instances_required)
+    if total_users <= users_per_instance:
+        instances_required = 1
+    else:
+        i = 0
+        while i < 5:
+            if total_users % users_per_instance == 0:
+                instances_required = int(total_users/users_per_instance)
+                break
             else:
-                instances_required += 1
-        i += 1
+                if total_users % instances_required == 0:
+                    users_per_instance = int(total_users / instances_required)
+                else:
+                    instances_required += 1
+            i += 1
 
-    if instances_required * users_per_instance != total_users:
-        print("Please provide total_users in multiples of users_per_instance.")
-        exit(0)
+        if instances_required * users_per_instance != total_users:
+            print("Please provide total_users in multiples of users_per_instance.")
+            exit(0)
 
     # write the number of instances required to a file in s3 bucket
     s3_client = session.client('s3', region_name="us-west-2")

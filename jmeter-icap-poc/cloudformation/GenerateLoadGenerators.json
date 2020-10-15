@@ -37,7 +37,15 @@
       "InstanceSecurityGroup":{
         "Type":"String",
         "Default" : "sg-0c82ddcb24373c694"
-      }
+      },
+     "MinInstances": {
+       "Type": "Number",
+       "Default": 1
+     },
+     "MaxInstances": {
+       "Type": "Number",
+       "Default": 1
+     }
    },
   "Resources" : {
 
@@ -60,8 +68,8 @@
      "Type" : "AWS::AutoScaling::AutoScalingGroup",
      "Properties" : {
         "LaunchConfigurationName" : { "Ref" : "LaunchConfig" },
-        "MinSize" : "1",
-        "MaxSize" : "1",
+        "MinSize" : { "Ref" : "MinInstances" },
+        "MaxSize" : { "Ref" : "MaxInstances" },
         "VPCZoneIdentifier" : { "Ref" : "SubnetIds" },
         "Tags" : [ 
           {

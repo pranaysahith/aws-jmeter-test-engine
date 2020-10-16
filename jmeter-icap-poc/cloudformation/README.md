@@ -29,14 +29,20 @@ region = eu-west-2
 4. Run below command to get help on the script
 
 ```
-python3 create_stack.py -h
+python create_stack.py -h
 ```
 
-Pass `total_users` and `users_per_instance` as input parameters to the script.
+Pass input parameters as required to the script.
 
 `total_users` is the total number of users for the test. Default value of this parameter is 4000
 
 `users_per_instance` is the number of users per ec2 instance. Default value of this parameter is 4000
+
+`ramp_up` is the ramp up time. Default value is 300 seconds
+
+`duration` is the duration of the test. Default value 900 seconds
+
+`endpoint_url`is the ICAP server URL. Default value is gw-icap02.westeurope.azurecontainer.io
 
 Based on the values passed for total_users and users_per_instance, number of instances required will be calculated. The total users will be equally divided among all the instances.
 
@@ -58,8 +64,7 @@ python create_stack.py --total_users 4000 --users_per_instance 4000
 
 Windows powershell or command prompt:
 ```powershell
-set AWS_DEFAULT_PROFILE your_profile_name
-python create_stack.py --total_users 4000 --users_per_instance 4000
+python create_stack.py --total_users 4000 --users_per_instance 4000 --ramp_up=300 --duration=900 --endpoint_url=gw-icap01.westeurope.azurecontainer.io
 ```
 
 7. Once the tests are completed, delete the stack from AWS cloudformation using console and run the script again when required.

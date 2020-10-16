@@ -81,7 +81,7 @@ It's worth checking a few things in the cloudformation script.
 
 There are some existing resources that the script uses to generate the required instances
 
-ami - ami-092e21435a23e4a1b
+ami - ami-002397ac402bb3b04
 
 sg - sg-0c82ddcb24373c694
 

@@ -369,7 +369,7 @@
       "pluginVersion": "7.2.0",
       "targets": [
         {
-          "alias": "Total Upload Successes",
+          "alias": "Total Process Successes",
           "groupBy": [],
           "measurement": "jmetericap",
           "orderByTime": "ASC",
@@ -449,7 +449,7 @@
       "pluginVersion": "7.2.0",
       "targets": [
         {
-          "alias": "Total Upload Errors",
+          "alias": "Total Process Errors",
           "groupBy": [],
           "measurement": "jmetericap",
           "orderByTime": "ASC",
@@ -529,7 +529,7 @@
       "pluginVersion": "7.2.0",
       "targets": [
         {
-          "alias": "Total Upload Requests",
+          "alias": "Total Process Requests",
           "groupBy": [],
           "measurement": "jmetericap",
           "orderByTime": "ASC",
@@ -974,5 +974,5 @@
   "timezone": "",
   "title": "ICAP Live Performance Dashboard",
   "uid": "L4sOZudGz",
-  "version": 17
+  "version": 20
 }

@@ -96,6 +96,17 @@ def main():
     date_suffix = now.strftime("%Y-%m-%d-%H-%M")
     stack_name = 'aws-jmeter-test-engine-' + date_suffix
     asg_name = "LoadTest-" + date_suffix
+
+    # Determine the size of ec2 instance
+    if 0 < users_per_instance < 1000:
+        instance_type = "m4.large"
+    elif 1000 <= users_per_instance < 2500:
+        instance_type = "m4.xlarge"
+    elif 2500 <= users_per_instance <= 4000:
+        instance_type = "m4.2xlarge"
+    else:
+        instance_type = "m4.2xlarge"
+
     print("Deploying %s instances in the ASG by creating %s cloudformation stack"% (instances_required, stack_name))
     client.create_stack(
         StackName=stack_name,
@@ -112,6 +123,10 @@ def main():
             {
                 "ParameterKey": "AsgName",
                 "ParameterValue": asg_name
+            },
+            {
+                "ParameterKey": "InstanceType",
+                "ParameterValue": instance_type
             }
         ]
     )

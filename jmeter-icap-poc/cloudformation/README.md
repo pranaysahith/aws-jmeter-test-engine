@@ -46,6 +46,15 @@ Pass input parameters as required to the script.
 
 Based on the values passed for total_users and users_per_instance, number of instances required will be calculated. The total users will be equally divided among all the instances.
 
+Based on the calculated value of number of users per instance, the size of the EC2 is choosed based on the below table:
+
+| Users per instance | EC2 size   |
+|--------------------|------------|
+| 0 < n < 1000       | m4.large   |
+| 1000 <= n < 2500   | m4.xlarge  |
+| 2500 <= n <= 4000  | m4.2xlarge |
+
+
 5. Create config file.
 
 Create config.env file by copying config.env.sample file. Update the file with below details:

@@ -52,8 +52,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -179,19 +182,22 @@
       "hiddenSeries": false,
       "id": 3,
       "legend": {
-        "avg": false,
-        "current": false,
+        "avg": true,
+        "current": true,
         "max": false,
         "min": false,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -253,7 +259,7 @@
           ]
         },
         {
-          "alias": "ICAP-Document-Download",
+          "alias": "ICAP-Document-Process",
           "groupBy": [],
           "measurement": "jmetericap",
           "orderByTime": "ASC",
@@ -334,6 +340,86 @@
                 "value": null
               },
               {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "alias": "Total Process Successes",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Document-Upload"
+            },
+            {
+              "condition": "AND",
+              "key": "statut",
+              "operator": "=",
+              "value": "ok"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Process Successes",
+      "type": "gauge"
+    },
+    {
+      "datasource": "InfluxDB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
                 "color": "red",
                 "value": 5
               }
@@ -344,8 +430,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
-        "x": 0,
+        "w": 4,
+        "x": 4,
         "y": 9
       },
       "id": 4,
@@ -360,10 +446,10 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "7.1.5",
+      "pluginVersion": "7.2.0",
       "targets": [
         {
-          "alias": "Number of  Errors",
+          "alias": "Total Process Errors",
           "groupBy": [],
           "measurement": "jmetericap",
           "orderByTime": "ASC",
@@ -374,7 +460,7 @@
             [
               {
                 "params": [
-                  "countError"
+                  "count"
                 ],
                 "type": "field"
               }
@@ -382,16 +468,102 @@
           ],
           "tags": [
             {
-              "key": "application",
+              "key": "transaction",
               "operator": "=",
-              "value": "application name"
+              "value": "ICAP-Document-Upload"
+            },
+            {
+              "condition": "AND",
+              "key": "statut",
+              "operator": "=",
+              "value": "ko"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Errors",
+      "title": "Total Process Errors",
+      "type": "gauge"
+    },
+    {
+      "datasource": "InfluxDB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 8,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "alias": "Total Process Requests",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Document-Upload"
+            },
+            {
+              "condition": "AND",
+              "key": "statut",
+              "operator": "=",
+              "value": "all"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Process Requests",
       "type": "gauge"
     },
     {
@@ -402,7 +574,21 @@
       "datasource": "InfluxDB",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -415,81 +601,32 @@
         "y": 9
       },
       "hiddenSeries": false,
-      "id": 5,
+      "id": 7,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
+        "avg": true,
+        "current": true,
+        "max": true,
         "min": false,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 4,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.5",
-      "pointradius": 2,
-      "points": false,
+      "pluginVersion": "7.2.0",
+      "pointradius": 5,
+      "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
-        {
-          "alias": "ICAP-Check-Resource-Status",
-          "groupBy": [],
-          "measurement": "jmetericap",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "transaction",
-              "operator": "=",
-              "value": "ICAP-Check-Resource-Status"
-            }
-          ]
-        },
-        {
-          "alias": "ICAP-Check-Server-Status",
-          "groupBy": [],
-          "measurement": "jmetericap",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "transaction",
-              "operator": "=",
-              "value": "ICAP-Check-Server-Status"
-            }
-          ]
-        },
         {
           "alias": "ICAP-Document-Download",
           "groupBy": [],
@@ -557,9 +694,259 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "datasource": "InfluxDB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": null
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 8,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "alias": "ICAP-Document-Process",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Document-Upload"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "ICAP Throughput",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.2.0",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "ICAP-Check-Resource-Status",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Check-Resource-Status"
+            }
+          ]
+        },
+        {
+          "alias": "ICAP-Check-Server-Status",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Check-Server-Status"
+            }
+          ]
+        },
+        {
+          "alias": "ICAP-Document-Process",
+          "groupBy": [],
+          "measurement": "jmetericap",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "transaction",
+              "operator": "=",
+              "value": "ICAP-Document-Upload"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "ICAP Throughput",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -587,5 +974,5 @@
   "timezone": "",
   "title": "ICAP Live Performance Dashboard",
   "uid": "L4sOZudGz",
-  "version": 2
+  "version": 20
 }

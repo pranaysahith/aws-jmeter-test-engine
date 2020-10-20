@@ -4,7 +4,7 @@
 
 Grafana allows you to create dashboards by sending HTTP post requests using their API. [An example post request for a new dashboard can be seen here.](https://grafana.com/docs/grafana/latest/http_api/dashboard/)
 
-Dashboards creation can be automated using this method, and this is what is attempted with the CreateDashboard.py script.
+Dashboard creation can be automated using this method, and this is what is attempted with the CreateDashboard.py script.
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ This API Key is needed as a paramater to be passed to the CreateDashboard.py scr
 ## Using CreateDashboard.py to Generate Dashboards
 
 
-The script requires four command line arguments to run, these come in the form of options you provide (example runs are listed below). The required options are listed below:
+The script requires four command line arguments to run, these come in the form of options you provide. The required options are listed below, followed by some example runs:
 
 <table>
 <tr>
@@ -63,7 +63,7 @@ This is provided for appending to measurements that will be displayed in the das
 
 ## Example CreateDashboards.py Runs
 
-A typical run should typically follow this format:
+A typical run should follow this format:
 ```bash
 CreateDashboards.py -u "Grafana URL" -k <API Key> -f "Grafana Template File Name" -p "prefix of choice"
 ```

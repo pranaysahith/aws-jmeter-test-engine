@@ -109,6 +109,7 @@ def main():
         instance_type = "m4.2xlarge"
 
     print("Deploying %s instances in the ASG by creating %s cloudformation stack"% (instances_required, stack_name))
+    exit(0)
     client.create_stack(
         StackName=stack_name,
         TemplateBody=asg_template_body,

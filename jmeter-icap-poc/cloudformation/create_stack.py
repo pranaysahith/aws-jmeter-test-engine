@@ -6,6 +6,7 @@ from math import ceil
 import argparse
 from datetime import datetime
 import re
+import os
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
         raise
 
     # Authenticate to aws
-    profile = configuration.get("aws_profile_name")
+    profile = os.getenv("AWS_PROFILE_NAME", configuration.get("aws_profile_name"))
     session = boto3.session.Session(profile_name=profile)
     client = session.client('cloudformation')
 
@@ -80,8 +81,8 @@ def main():
     script_data = re.sub("-Jp_url=[a-zA-Z0-9\-\.]*", "-Jp_url=" + str(endpoint_url), script_data)
 
     s3_client = session.client('s3')
-    bucket = configuration.get("bucket")
-    file_name = configuration.get("file_name")
+    bucket = os.getenv("BUCKET", configuration.get("bucket"))
+    file_name = os.getenv("FILE_NAME", configuration.get("file_name"))
     s3_client.put_object(Bucket=bucket,
                         Body=script_data,
                         Key=file_name)

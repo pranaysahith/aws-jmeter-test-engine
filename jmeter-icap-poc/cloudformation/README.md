@@ -1,4 +1,4 @@
-## Create CloudFormation stack to deploy AutoScalingGroup
+## Deploy CloudFormation stack to run jmeter tests
 
 1. Install python.
 

@@ -93,7 +93,7 @@ def main():
             exit(0)
 
     # write the script to s3 bucket after updating the parameters
-    with open("script.sh") as f:
+    with open("../scripts/StartExecution.sh") as f:
         script_data = f.read()
     
     script_data = re.sub("-Jp_vuserCount=[0-9]*", "-Jp_vuserCount=" + str(users_per_instance), script_data)

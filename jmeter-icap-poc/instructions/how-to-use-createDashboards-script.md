@@ -29,7 +29,7 @@ This API Key is needed as a paramater to be passed to the CreateDashboard.py scr
 ## Using CreateDashboard.py to Generate Dashboards
 
 
-The script requires four command line arguments to run, these come in the form of options you provide. The required options are listed below, followed by some example runs:
+The script requires four command line arguments to run, these come in the form of options you provide. Once complete, the script produces a link to the newly created dashboard. The required options are listed below, followed by some example runs:
 
 <table>
 <tr>
@@ -71,3 +71,4 @@ An example run from my local machine:
 ```bash
 CreateDashboards.py -u "http://localhost:3000/" -k "eyJrIjoiR0ZXZmt1UFc0OEpIOGN5RWdUalBJTllUTk83VlhtVGwiLCJuIjoiYXBpa2V5Y3VybCIsImlkIjo2fQ==" -f "D:/Git Projects/aws-jmeter-test-engine-v1/jmeter-icap-poc/scripts/ICAP-Dashboard-4-grafana.json" -p "test-prefix"
 ```
+If the run was successful, the script outputs a URL to the newly created dashboard.
